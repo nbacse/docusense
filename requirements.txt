@@ -4,5 +4,6 @@ transformers==4.40.1
 sentence-transformers==2.7.0
 faiss-cpu==1.8.0
 langchain==0.1.17
-Pillow
-tesserocr
+huggingface-hub==0.23.0
+pillow
+tesserocr==2.5.2
