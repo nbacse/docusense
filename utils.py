@@ -5,6 +5,8 @@ from langchain.vectorstores import FAISS
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.chains import RetrievalQA
 from langchain.llms import HuggingFaceHub
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
 
 def extract_text(file):
     doc = fitz.open(stream=file.read(), filetype="pdf")
