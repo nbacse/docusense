@@ -1,8 +1,8 @@
-streamlit
-PyMuPDF
-langchain
-transformers
-sentence-transformers
-faiss-cpu
-tesserocr
+streamlit==1.35.0
+PyMuPDF==1.23.21
+transformers==4.40.1
+sentence-transformers==2.7.0
+faiss-cpu==1.8.0
+langchain==0.1.17
 Pillow
+tesserocr
