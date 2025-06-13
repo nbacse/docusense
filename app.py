@@ -1,36 +1,33 @@
 import streamlit as st
-from utils import extract_text, summarize_text, build_qa_chain
 import time
+from utils import extract_text, summarize_text, build_qa_chain
 
-st.set_page_config(page_title="DocuSense AI", layout="wide")
+st.set_page_config(page_title="DocuSense AI", layout="wide", page_icon="📁")
 st.title("📁 DocuSense – AI File Summarizer & QA")
 
-uploadedFile = st.file_uploader("Upload a document", type=["pdf", "txt", "docx"])
+uploaded_file = st.file_uploader("Upload a document (PDF, DOCX, or TXT)", type=["pdf", "docx", "txt"])
 
-def update_progress(statusText, progress):
-    with st.status(statusText, expanded=True) as status:
-        bar = st.progress(0)
-        for i in range(1, progress + 1, 5):
-            bar.progress(i)
-            time.sleep(0.02)
-        status.update(label=f"{statusText} Complete ✅", state="complete")
+def run_with_progress(label, func, *args, **kwargs):
+    progress_placeholder = st.empty()
+    progress_bar = progress_placeholder.progress(0, text=label)
+    for pct in range(0, 100, 10):
+        time.sleep(0.05)
+        progress_bar.progress(pct + 1, text=label)
+    result = func(*args, **kwargs)
+    progress_bar.progress(100, text=f"{label} ✅")
+    time.sleep(0.1)
+    progress_placeholder.empty()
+    return result
 
-if uploadedFile:
-    update_progress("📄 Extracting text...", 100)
-    text = extract_text(uploadedFile, uploadedFile.name)
-
+if uploaded_file:
+    text = run_with_progress("Extracting text...", extract_text, uploaded_file, uploaded_file.name)
     st.subheader("📄 Extracted Text")
-    st.text_area("Text", text, height=300)
-
-    with st.expander("🧠 Summary"):
-        update_progress("Summarizing...", 100)
-        summary = summarize_text(text)
-        st.success(summary)
-
+    st.text_area("Preview", text, height=300)
+    summary = run_with_progress("Summarizing...", summarize_text, text)
+    st.subheader("🧠 Summary")
+    st.success(summary)
     st.subheader("❓ Ask a Question")
-    question = st.text_input("Ask anything from the document")
-
+    question = st.text_input("Ask anything about this document")
     if question:
-        update_progress("Generating answer...", 100)
-        answer = build_qa_chain(text, question)
+        answer = run_with_progress("Generating answer...", build_qa_chain, text, question)
         st.info(answer)
