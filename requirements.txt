@@ -1,5 +1,6 @@
 streamlit
 PyMuPDF
+python-docx
 transformers
 sentence-transformers
 faiss-cpu
