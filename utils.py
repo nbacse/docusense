@@ -66,8 +66,11 @@ def build_qa_chain(text: str, question: str) -> str:
 import os
 import streamlit as st
 
-if "HUGGINGFACEHUB_API_TOKEN" in st.secrets:
-    os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
+token = st.secrets.get("HUGGINGFACEHUB_API_TOKEN")
+
+if token:
+    os.environ["HUGGINGFACEHUB_API_TOKEN"] = token
 else:
-    st.error("❌ HUGGINGFACEHUB_API_TOKEN not found in secrets. App will crash.")
+    st.error("❌ Secret HUGGINGFACEHUB_API_TOKEN not found. Please set it in Streamlit Cloud > Settings > Secrets.")
+    st.stop()
 
