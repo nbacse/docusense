@@ -6,6 +6,7 @@ st.set_page_config(page_title="DocuSense AI", layout="wide", page_icon="📁")
 st.title("📁 DocuSense – AI File Summarizer & QA")
 
 uploaded_file = st.file_uploader("Upload a document (PDF, DOCX, or TXT)", type=["pdf", "docx", "txt"])
+st.write("✅ Token found:", "HUGGINGFACEHUB_API_TOKEN" in st.secrets)
 
 def run_with_progress(label, func, *args, **kwargs):
     progress_placeholder = st.empty()

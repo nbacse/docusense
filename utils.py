@@ -62,3 +62,12 @@ def build_qa_chain(text: str, question: str) -> str:
     store = FAISS.from_texts(docs, _load_embeddings())
     qa = RetrievalQA.from_chain_type(llm=_load_llm(), retriever=store.as_retriever())
     return qa.run(question)
+
+import os
+import streamlit as st
+
+if "HUGGINGFACEHUB_API_TOKEN" in st.secrets:
+    os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
+else:
+    st.error("❌ HUGGINGFACEHUB_API_TOKEN not found in secrets. App will crash.")
+
